@@ -37,12 +37,14 @@ phina.define("SceneMain", {
     // spriteの当たり判定
     this.pieceGroup.children.forEach(child => {
       if (!child.matchFlg && child.matchCheck()) {
+        //console.log("before:", this.pieceGroup.children);
         // 移動停止
         child.sprite.flickable.vertical = false;
         child.sprite.flickable.horizontal = false;
-        // グループの一番奥に移動
-        this.pieceGroup.children.splice(child.index, 1);
-        this.pieceGroup.children.splice(0, 0, child);
+        // グループの一番奥に移動（修正中）
+        console.log("child.index splice", child.index);
+        //this.pieceGroup.children.splice(child.index, 1);
+        //this.pieceGroup.children.splice(0, 0, child);
         releaseSemaphore();
         // 正解数インクリメント
         this.correct_cnt++;
@@ -52,6 +54,7 @@ phina.define("SceneMain", {
           this.correct_cnt = 0;
           this.drawGoalButton();
         }
+        //console.log("after:", this.pieceGroup.children);
       }
     })
   },
@@ -93,7 +96,7 @@ phina.define("SceneMain", {
       this.click_cnt = 0;
       this.setInteractive(true);
       this.onpointstart = () => {
-        console.log("this onpointclick");
+        //console.log("this onpointclick");
         this.titleLabel.text = CLICK_COUNT_MSG + zeroPadding(this.click_cnt, 2);
         this.click_cnt++;
       }
@@ -159,7 +162,7 @@ phina.define("SceneMain", {
 
       // オブジェクト上でマウスボタンを押下、もしくは指でオブジェクトをタッチした瞬間
       sprite.onpointstart = () => {
-        console.log("obj.index onpointclick", obj.index);
+        //console.log("obj.index onpointclick", obj.index);
         getSemaphore(obj);
         // レイヤーが一番手前のsprite
         if (listSemaphore[obj.index] == 1) {
@@ -189,13 +192,13 @@ phina.define("SceneMain", {
       // pointstart後、マウスボタンを押下しつづける、もくしは指を端末上においている間
       // （マウスボタン/指を押さえている間はオブジェクトの範囲外に出ても発火し続ける）
       sprite.onpointstay = (e) => {
-        console.log("obj.index onpointstay", obj.index);
+        //console.log("obj.index onpointstay", obj.index);
       };
 
       // pointstayの状態でマウスポインタ、もくしは指を移動
       // （pointstay同様、オブジェクト範囲外に出ても発火し続ける）
       sprite.onpointmove = () => {
-        console.log("obj.index onpointmove", obj.index);
+        //console.log("obj.index onpointmove", obj.index);
         getSemaphore(obj);
         // スクリーン外へ移動した場合
         if (sprite.y < OUT_PIXEL)                 sprite.y = OUT_PIXEL;
@@ -207,7 +210,7 @@ phina.define("SceneMain", {
       // pointstart後、マウスボタンもしくは指を離した瞬間
       // （離す際、ポインタ・指はオブジェクト上に無くても良い）
       sprite.onpointend = () => {
-        console.log("obj.index onpointend", obj.index);
+        //console.log("obj.index onpointend", obj.index);
         releaseSemaphore();
       };
 
@@ -215,14 +218,14 @@ phina.define("SceneMain", {
       // （タッチ操作の場合、発火条件がpointstartに近くなるが、若干異なる）
       // （例えばpointover/pointoutの場合、すでに端末上においた指をスライドしてオブジェクトに触れた/離れた際も発火する。）
       sprite.onpointover = () => {
-        console.log("obj.index onpointover", obj.index);
+        //console.log("obj.index onpointover", obj.index);
       };
       
       // マウスポインタもしくは指がオブジェクトから離れた瞬間
       // （タッチ操作の場合、発火条件がpointendに近くなるが、若干異なる）
       // （例えばpointover/pointoutの場合、すでに端末上においた指をスライドしてオブジェクトに触れた/離れた際も発火する。）
       sprite.onpointout = () => {
-        console.log("obj.index onpointout", obj.index);
+        //console.log("obj.index onpointout", obj.index);
       };
       index++;
     }
