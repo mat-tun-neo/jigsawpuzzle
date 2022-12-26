@@ -16,7 +16,8 @@ phina.define("SceneMain", {
     GameMain = this;
     // スプライトグループ
     this.background = DisplayElement().addChildTo(this);
-    this.frameGroup = DisplayElement().addChildTo(this);
+    this.shapeGroup = DisplayElement().addChildTo(this);
+    this.matchGroup = DisplayElement().addChildTo(this);
     this.pieceGroup = DisplayElement().addChildTo(this);
     this.buttonGroup = DisplayElement().addChildTo(this);
     // Xボタン描画
@@ -41,11 +42,10 @@ phina.define("SceneMain", {
         // 移動停止
         child.sprite.flickable.vertical = false;
         child.sprite.flickable.horizontal = false;
-        // グループの一番奥に移動（修正中）
-        console.log("child.index splice", child.index);
-        //this.pieceGroup.children.splice(child.index, 1);
-        //this.pieceGroup.children.splice(0, 0, child);
+        child.sprite.setInteractive(false);
         releaseSemaphore();
+        // スプライトを奥のグループに移動
+        child.addChildTo(this.matchGroup);
         // 正解数インクリメント
         this.correct_cnt++;
         console.log("this.correct_cnt", this.correct_cnt);
@@ -121,7 +121,8 @@ phina.define("SceneMain", {
   // 枠とキャラクターの描画
   drawCharactor: function() {
     //console.log("SceneMainクラスdrawCharactor");
-    this.frameGroup.children.length = 0;
+    this.shapeGroup.children.length = 0;
+    this.matchGroup.children.length = 0;
     this.pieceGroup.children.length = 0;
 
     // 枠の描画
@@ -130,7 +131,7 @@ phina.define("SceneMain", {
       let f = FRAME[no];
       let obj = SpriteCharacter(
         f.sheetname, "000", f.x + OFFSET_X, f.y + OFFSET_Y, -1, f.width, f.height
-      ).addChildTo(this.frameGroup);
+      ).addChildTo(this.shapeGroup);
       if (DEBUG_MODE == 1) {
         obj.sprite.setInteractive(true);
         obj.sprite.onpointstart = () => {
