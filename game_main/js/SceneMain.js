@@ -16,7 +16,7 @@ phina.define("SceneMain", {
     GameMain = this;
     // スプライトグループ
     this.background = DisplayElement().addChildTo(this);
-    this.shapeGroup = DisplayElement().addChildTo(this);
+    this.frameGroup = DisplayElement().addChildTo(this);
     this.matchGroup = DisplayElement().addChildTo(this);
     this.pieceGroup = DisplayElement().addChildTo(this);
     this.buttonGroup = DisplayElement().addChildTo(this);
@@ -121,7 +121,7 @@ phina.define("SceneMain", {
   // 枠とキャラクターの描画
   drawCharactor: function() {
     //console.log("SceneMainクラスdrawCharactor");
-    this.shapeGroup.children.length = 0;
+    this.frameGroup.children.length = 0;
     this.matchGroup.children.length = 0;
     this.pieceGroup.children.length = 0;
 
@@ -131,7 +131,7 @@ phina.define("SceneMain", {
       let f = FRAME[no];
       let obj = SpriteCharacter(
         f.sheetname, "000", f.x + OFFSET_X, f.y + OFFSET_Y, -1, f.width, f.height
-      ).addChildTo(this.shapeGroup);
+      ).addChildTo(this.frameGroup);
       if (DEBUG_MODE == 1) {
         obj.sprite.setInteractive(true);
         obj.sprite.onpointstart = () => {

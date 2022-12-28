@@ -45,7 +45,7 @@ phina.define("SpriteCharacter", {
   matchCheck: function() {
     // マッチ判定（true：マッチ、false：アンマッチ）
     let result = false;
-    GameMain.shapeGroup.children.forEach(e=> {
+    GameMain.frameGroup.children.forEach(e=> {
       if (this.spritesheet.slice(-2) == e.spritesheet.slice(-2)) {
         let c1 = Circle(this.sprite.x, this.sprite.y, MATCH_PIXEL);
         let c2 = Circle(e.sprite.x, e.sprite.y, MATCH_PIXEL); 
