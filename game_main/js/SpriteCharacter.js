@@ -39,8 +39,15 @@ phina.define("SpriteCharacter", {
     }
   },
   moveRandom: function () {
-    this.sprite.x = rand(0, SCREEN_WIDTH);
-    this.sprite.y = rand(INIT_PIECE_Y, SCREEN_HEIGHT);
+    // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
+    let capture_padding = SCREEN_WIDTH / Math.sqrt(PIECE_TOTALNUM) / 2;
+    if (DEBUG_MODE == 2) {
+      this.sprite.x = rand(capture_padding, SCREEN_WIDTH - capture_padding);
+      this.sprite.y = rand(INIT_PIECE_Y, SCREEN_HEIGHT - capture_padding);
+    } else {
+      this.sprite.x = rand(0, SCREEN_WIDTH);
+      this.sprite.y = rand(INIT_PIECE_Y, SCREEN_HEIGHT);
+    }
   },
   matchCheck: function() {
     // マッチ判定（true：マッチ、false：アンマッチ）

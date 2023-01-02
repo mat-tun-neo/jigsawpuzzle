@@ -1,6 +1,9 @@
 // グローバルに展開
 phina.globalize();
 
+// デバッグモード
+const DEBUG_MODE = 0;              // 0: OFF, 1: ON, 2: キャプチャモード
+
 // 画面・スプライトサイズ
 const SCREEN_WIDTH           = 640;
 const SCREEN_HEIGHT          = 960;

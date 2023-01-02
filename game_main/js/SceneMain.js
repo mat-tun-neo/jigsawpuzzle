@@ -28,6 +28,9 @@ phina.define("SceneMain", {
     this.correct_cnt = 0;
     // クリック数カウント
     this.click_cnt = 0;
+    // デバッグ対象のスプライト
+    this.debug_sprite_index = 0;
+    this.debug_sprite;
   },
   // 画面更新
   update: function(app) {
@@ -57,6 +60,71 @@ phina.define("SceneMain", {
         //console.log("after:", this.pieceGroup.children);
       }
     })
+
+    // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
+    if (DEBUG_MODE == 1) {
+      let key = app.keyboard;
+      let target_sprite;
+      if (this.debug_sprite == null) {
+        this.debug_sprite = phina.display.StarShape().addChildTo(this.buttonGroup);
+        let no = zeroPadding(this.debug_sprite_index, 2);
+        let f = FRAME[no];
+        this.debug_sprite.setPosition(f.x, f.y);
+      }
+      if (this.frameGroup.children[this.debug_sprite_index] != null) {
+        target_sprite = this.frameGroup.children[this.debug_sprite_index].sprite;
+        if (key.getKeyDown('space')) {
+          let array_x = [];
+          let array_y = [];
+          this.frameGroup.children.forEach((child, index)=> {
+            array_x[index] = child.sprite.x;
+            array_y[index] = child.sprite.y;
+          })
+          console.log("let x = [ " + array_x.join(", ") + " ];              // フレーム画像の表示位置X");
+          console.log("let y = [ " + array_y.join(", ") + " ];              // フレーム画像の表示位置Y");
+        }
+        // キー押下中移動
+        if (key.getKey('left')) {
+          target_sprite.x--;
+        }
+        if (key.getKey('right')) {
+          target_sprite.x++;
+        }
+        if (key.getKey('up')) {
+          target_sprite.y--;
+        }
+        if (key.getKey('down')) {
+          target_sprite.y++;
+        }
+        // 1ピクセルずつ移動
+        if (key.getKeyDown('delete')) {
+          target_sprite.x--;
+        }
+        if (key.getKeyDown('pagedown')) {
+          target_sprite.x++;
+        }
+        if (key.getKeyDown('home')) {
+          target_sprite.y--;
+        }
+        if (key.getKeyDown('end')) {
+          target_sprite.y++;
+        }
+      }
+      if (key.getKeyDown('Z')) {
+        this.debug_sprite_index--;
+        let no = zeroPadding(this.debug_sprite_index, 2);
+        let f = FRAME[no];
+        this.debug_sprite.setPosition(f.x, f.y);
+        console.log("debug_sprite_index:", this.debug_sprite_index);
+      }
+      if (key.getKeyDown('X')) {
+        this.debug_sprite_index++;
+        let no = zeroPadding(this.debug_sprite_index, 2);
+        let f = FRAME[no];
+        this.debug_sprite.setPosition(f.x, f.y);
+        console.log("debug_sprite_index:", this.debug_sprite_index);
+      }
+    }
   },
   // Xボタン描画
   drawXButton: function() {
@@ -92,13 +160,21 @@ phina.define("SceneMain", {
       this.titleLabel.fill = "white";
       this.titleLabel.stroke = "black";
       this.titleLabel.strokeWidth = 2;
-      // 一番手前のクリック判定でカウント
-      this.click_cnt = 0;
+      // 画面全体のクリック判定でカウント
       this.setInteractive(true);
+      // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
+      if (DEBUG_MODE == 2) {
+        this.click_cnt = PIECE_TOTALNUM;
+      } else {
+        this.click_cnt = 0;
+      }
       this.onpointstart = () => {
         //console.log("this onpointclick");
-        this.titleLabel.text = CLICK_COUNT_MSG + zeroPadding(this.click_cnt, 2);
-        this.click_cnt++;
+        this.titleLabel.text = CLICK_COUNT_MSG + this.click_cnt;
+        // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
+        if (DEBUG_MODE != 2) {
+          this.click_cnt++;
+        }
       }
     }.bind(this);
   },
@@ -130,21 +206,17 @@ phina.define("SceneMain", {
       let no = zeroPadding(i, 2);
       let f = FRAME[no];
       let obj = SpriteCharacter(
-        f.sheetname, "000", f.x + OFFSET_X, f.y + OFFSET_Y, -1, f.width, f.height
+        f.sheetname, "000", Math.round(f.x) + OFFSET_X, Math.round(f.y) + OFFSET_Y, -1, f.width, f.height
       ).addChildTo(this.frameGroup);
+      // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
       if (DEBUG_MODE == 1) {
         obj.sprite.setInteractive(true);
-        obj.sprite.onpointstart = () => {
-          console.log(f.sheetname + "_x:", Math.round(obj.sprite.x), f.sheetname + "_y:", Math.round(obj.sprite.y));
-        };
         obj.sprite.onpointmove = (e) => {
-          obj.sprite.x += e.pointer.dx;
-          obj.sprite.y += e.pointer.dy;
-          console.log(f.sheetname + "_x:", Math.round(obj.sprite.x), f.sheetname + "_y:", Math.round(obj.sprite.y));
+          obj.sprite.x += Math.round(e.pointer.dx);
+          obj.sprite.y += Math.round(e.pointer.dy);
         };
       }
     }
-
     // ピースの描画
     let index = 0;
     for (let i = 0; i < PIECE_TOTALNUM; i++) {
@@ -153,7 +225,18 @@ phina.define("SceneMain", {
       let obj = SpriteCharacter(
         p.sheetname, "000", 0, 0, index, p.width, p.height
       ).addChildTo(this.pieceGroup);
-      obj.moveRandom();
+      // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
+      if (DEBUG_MODE == 2) {
+        let f = FRAME[no];
+        if (rand(0,1) > 0) {
+          obj.moveRandom();
+        } else {
+          obj.sprite.x = Math.round(f.x) + OFFSET_X;
+          obj.sprite.y = Math.round(f.y) + OFFSET_Y;
+        }
+      } else {
+        obj.moveRandom();
+      }
 
       // マウス・指のイベント処理（キャラクターのみ）
       listSemaphore[index] = 0;

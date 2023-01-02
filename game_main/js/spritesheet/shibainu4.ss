@@ -1,5 +1,3 @@
-const DEBUG_MODE = 0;              // 0: OFF, 1: ON
-
 const INIT_PIECE_Y = SCREEN_HEIGHT/2 + 100;     // ピースの初期位置の最下ラインY
 const GOAL_Y = SCREEN_HEIGHT/2 + 250;           // ゴール画像の位置Y
 const CLICK_COUNT_MSG = "クリック回数："         // クリック回数のタイトル
@@ -11,12 +9,12 @@ const FRAME = {};
 const PIECE_TOTALNUM = 4;                   // ピース数
 const OUT_PIXEL = 20/PIECE_TOTALNUM*(-1);   // スクリーン外の判定幅
 const PIECE_IMAGE = "shibainu4";            // ピースの画像名
-let width  = [ 257, 330, 263, 325 ];        // 画像サイズX
-let height = [ 326, 263, 262, 326 ];        // 画像サイズY
+let width  = [ 257, 330, 330, 257 ];        // 画像サイズX
+let height = [ 324, 330, 258, 257 ];        // 画像サイズY
 const OFFSET_X = 0;                         // フレーム画像の表示位置 オフセットX
 const OFFSET_Y = 0;                         // フレーム画像の表示位置 オフセットY
-let x = [ 194, 400, 197, 403];              // フレーム画像の表示位置X
-let y = [ 219, 187, 425, 393];              // フレーム画像の表示位置Y
+let x = [ 194, 400, 230, 436 ];              // フレーム画像の表示位置X
+let y = [ 219, 222, 429, 429 ];              // フレーム画像の表示位置Y
 
 let animations = { "000" : {"frames": [ 0],  "next": "000", "frequency": 1 } };
 for (let i = 0; i < PIECE_TOTALNUM; i++) {
