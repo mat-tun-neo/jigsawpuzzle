@@ -96,18 +96,18 @@ phina.define("SceneMain", {
         if (key.getKey('down')) {
           target_sprite.y++;
         }
-        // 1ピクセルずつ移動
+        // 0.5ピクセルずつ移動
         if (key.getKeyDown('delete')) {
-          target_sprite.x--;
+          target_sprite.x -= 0.5;
         }
         if (key.getKeyDown('pagedown')) {
-          target_sprite.x++;
+          target_sprite.x += 0.5;
         }
         if (key.getKeyDown('home')) {
-          target_sprite.y--;
+          target_sprite.y -= 0.5;
         }
         if (key.getKeyDown('end')) {
-          target_sprite.y++;
+          target_sprite.y += 0.5;
         }
       }
       if (key.getKeyDown('Z')) {
@@ -206,7 +206,7 @@ phina.define("SceneMain", {
       let no = zeroPadding(i, 2);
       let f = FRAME[no];
       let obj = SpriteCharacter(
-        f.sheetname, "000", Math.round(f.x) + OFFSET_X, Math.round(f.y) + OFFSET_Y, -1, f.width, f.height
+        f.sheetname, "000", f.x + OFFSET_X, f.y + OFFSET_Y, -1, f.width, f.height
       ).addChildTo(this.frameGroup);
       // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
       if (DEBUG_MODE == 1) {

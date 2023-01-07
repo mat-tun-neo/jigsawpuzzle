@@ -8,13 +8,13 @@ const PIECE = {};
 const FRAME = {};
 const PIECE_TOTALNUM = 4;                   // ピース数
 const OUT_PIXEL = 20/PIECE_TOTALNUM*(-1);   // スクリーン外の判定幅
-const PIECE_IMAGE = "shibainu4";            // ピースの画像名
+const PIECE_IMAGE = 'shibainu4';            // ピースの画像名
 let width  = [ 257, 330, 330, 257 ];        // 画像サイズX
 let height = [ 324, 330, 258, 257 ];        // 画像サイズY
+let x = [ 188.5, 395.0, 225.0, 431.5 ];              // フレーム画像の表示位置X
+let y = [ 223.0, 226.0, 432.0, 432.5 ];              // フレーム画像の表示位置Y
 const OFFSET_X = 0;                         // フレーム画像の表示位置 オフセットX
 const OFFSET_Y = 0;                         // フレーム画像の表示位置 オフセットY
-let x = [ 194, 400, 230, 436 ];              // フレーム画像の表示位置X
-let y = [ 219, 222, 429, 429 ];              // フレーム画像の表示位置Y
 
 let animations = { "000" : {"frames": [ 0],  "next": "000", "frequency": 1 } };
 for (let i = 0; i < PIECE_TOTALNUM; i++) {
