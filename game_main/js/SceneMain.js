@@ -228,7 +228,7 @@ phina.define("SceneMain", {
       // デバッグモード(0: OFF, 1: ON, 2: キャプチャモード)
       if (DEBUG_MODE == 2) {
         let f = FRAME[no];
-        if (rand(0,1) > 0) {
+        if (rand(0,99) > MODE2_PROBABILITY) {
           obj.moveRandom();
         } else {
           obj.sprite.x = Math.round(f.x) + OFFSET_X;

@@ -3,6 +3,7 @@ phina.globalize();
 
 // デバッグモード
 const DEBUG_MODE = 0;              // 0: OFF, 1: ON, 2: キャプチャモード
+let MODE2_PROBABILITY = 50;        // 2:キャプチャモードの場合にピースがランダム位置の確率
 
 // 画面・スプライトサイズ
 const SCREEN_WIDTH           = 640;
@@ -12,8 +13,8 @@ const BUTTON_SIZE            = 80;
 const LABEL_FONT_SIZE        = 30;
 const START_BUTTON_WIDTH     = 500;
 const START_BUTTON_HEIGHT    = 250;
-const GOAL_BUTTON_WIDTH      = 500;
-const GOAL_BUTTON_HEIGHT     = 250;
+let GOAL_BUTTON_WIDTH        = 500;
+let GOAL_BUTTON_HEIGHT       = 250;
 const RELOCATION_TIMES       = 200000;
 const MATCH_PIXEL            = 20;
 
